@@ -1,0 +1,33 @@
+swagger: "2.0"
+info:
+  description: "This is a sample reactive server that use Redis PubSub system in order to update a reactive endpoint."
+  version: "1.0.0"
+  title: "Reactive Redis"
+  termsOfService: "https://github.com/jesty"
+  contact:
+    email: "davidecerbo@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /ticker:
+    get:
+      description: "Tick every second"
+      operationId: "tick"
+      consumes:
+      - "text/event-stream"
+      - "application/json"
+      produces:
+      - "text/event-stream"
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items: 
+              type: number
