@@ -12,6 +12,7 @@ info:
 host: "localhost:8080"
 basePath: "/api"
 schemes:
+- "https"
 - "http"
 paths:
   /ticker:
@@ -19,15 +20,46 @@ paths:
       description: "Tick every second"
       operationId: "tick"
       consumes:
-      - "text/event-stream"
       - "application/json"
       produces:
       - "text/event-stream"
-      - "application/json"
       responses:
         200:
           description: "successful operation"
           schema:
             type: "array"
-            items: 
+            items:
               type: number
+
+  /items:
+    get:
+      description: "Live items list"
+      parameters:
+      - name: "filter"
+        in: "query"
+        description: "Value that must be in name string"
+        type: string
+      operationId: "listItems"
+      consumes:
+      - "application/json"
+      produces:
+      - "text/event-stream"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Item"
+
+definitions:
+  Item:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        example: "1"
+      name:
+        type: string
+        example: "Item One"
