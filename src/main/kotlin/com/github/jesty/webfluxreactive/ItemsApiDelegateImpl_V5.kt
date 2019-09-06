@@ -36,7 +36,6 @@ class ItemsApiDelegateImpl_V5(val itemOps: ReactiveRedisOperations<String, Item>
                             .doOnNext { println(it) }
                 }
                 .asFlow()
-
     }
 
     @RequestMapping(value = ["/items"], produces = ["text/event-stream"], method = [RequestMethod.GET])
@@ -50,9 +49,19 @@ class ItemsApiDelegateImpl_V5(val itemOps: ReactiveRedisOperations<String, Item>
             fluxAll.collect { emit(it) }
             hot.collect { emit(it) }
         }.filter {
-            if (!filter.isNullOrEmpty()) it.name.contains(filter.toString()) else true
+            filter(filter, it)
         }
     }
+
+    @RequestMapping(value = ["/live"], produces = ["text/event-stream"], method = [RequestMethod.GET])
+    fun liveItems(filter: String?, exchange: ServerWebExchange?): Flow<Item> {
+        return hot.filter {
+            filter(filter, it)
+        }
+    }
+
+    private fun filter(filter: String?, it: Item) =
+            if (!filter.isNullOrEmpty()) it.name.contains(filter.toString()) else true
 
 }
 
