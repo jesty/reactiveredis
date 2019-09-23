@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.reactive.flow.asFlow
 import org.springframework.data.redis.core.ReactiveRedisOperations
+import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
@@ -39,6 +40,7 @@ class ItemsApiDelegateImpl_V5(val itemOps: ReactiveRedisOperations<String, Item>
     }
 
     @RequestMapping(value = ["/items"], produces = ["text/event-stream"], method = [RequestMethod.GET])
+    @MessageMapping("items")
     fun listItems(filter: String?, exchange: ServerWebExchange?): Flow<Item> {
         val fluxAll = itemOps
                 .opsForList()
@@ -54,6 +56,7 @@ class ItemsApiDelegateImpl_V5(val itemOps: ReactiveRedisOperations<String, Item>
     }
 
     @RequestMapping(value = ["/live"], produces = ["text/event-stream"], method = [RequestMethod.GET])
+    @MessageMapping("live")
     fun liveItems(filter: String?, exchange: ServerWebExchange?): Flow<Item> {
         return hot.filter {
             filter(filter, it)

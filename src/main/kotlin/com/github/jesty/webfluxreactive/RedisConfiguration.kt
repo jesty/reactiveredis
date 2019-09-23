@@ -10,6 +10,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
+
 @Configuration
 class RedisConfiguration {
 
@@ -20,4 +21,5 @@ class RedisConfiguration {
         val context = builder.value(serializer).build()
         return ReactiveRedisTemplate(factory, context)
     }
+
 }
