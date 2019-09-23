@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.server.router
 class WebConfiguration {
 
     @Bean
-    fun staticResourceRouter() = resources("/**", ClassPathResource("static/"))
+    fun staticResourceRouter() = resources("/assets/**", ClassPathResource("static/"))
 
     @Bean
     fun indexRouter(@Value("classpath:/static/index.html") indexHtml: Resource) = router {
