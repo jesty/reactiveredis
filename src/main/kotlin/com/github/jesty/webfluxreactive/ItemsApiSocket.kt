@@ -12,14 +12,10 @@ import javax.annotation.PostConstruct
 class ItemsApiSocket(val itemOps: ItemService) {
 
     @MessageMapping("items")
-    fun listItems(filter: String?): Flow<Item> {
-        return itemOps.listItems("")
-    }
+    fun listItems(filter: String?): Flow<Item> = itemOps.listItems(filter)
 
     @MessageMapping("live")
-    fun liveItems(filter: String?): Flow<Item> {
-        return itemOps.liveItems(filter)
-    }
+    fun liveItems(filter: String?): Flow<Item> = itemOps.liveItems(filter)
 
 }
 
